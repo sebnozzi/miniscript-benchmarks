@@ -40,11 +40,18 @@ end function
 Timer = {}
 Timer.startTime = 0
 Timer.stopTime = 0
+Timer.average = function
+	return floor(self.values.sum / self.values.len)
+end function
+Timer.values = 0
 Timer.start = function
 	self.startTime = time
 end function
 Timer.stop = function
 	self.stopTime = time
+	et = self.elapsedTime
+	if self.values == 0 then self.values = []
+	self.values.push et 
 end function
 Timer.elapsedTime = function
 	return floor(1000 * (self.stopTime - self.startTime))
@@ -83,8 +90,8 @@ while true
 	
 	// Print elapsed times
 	
-	print "Generatiton took "+readTimer.elapsedTime+"ms"
-	print "Computation took "+compTimer.elapsedTime+"ms"
+	print "Generatiton took "+readTimer.elapsedTime+"ms - avg: " + readTimer.average
+	print "Computation took "+compTimer.elapsedTime+"ms - avg: " + compTimer.average
 	print ""
 		
 end while
